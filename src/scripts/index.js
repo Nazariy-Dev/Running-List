@@ -1,1 +1,1 @@
-console.log("jello")
+import "../styles/main.scss"

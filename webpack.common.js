@@ -1,6 +1,4 @@
 const path = require("path")
-const { default: test } = require("node:test");
-const PugLoader = require("pug-loader")
 
 module.exports = {
     entry: {
@@ -19,9 +17,13 @@ module.exports = {
                 type: 'asset/resource',
                 generator: {
                     filename: '[name][ext]'
-                  }
+                }
           
             },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+              },
         ]
     },
 }

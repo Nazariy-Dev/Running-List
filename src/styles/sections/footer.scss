@@ -1,0 +1,11 @@
+.footer{
+    margin-top: 40px;
+    &__text{
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+    }
+
+}

@@ -16,13 +16,16 @@ module.exports = {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
                 generator: {
-                    filename: '[name][ext]'
+                    filename: 'img/[name][ext]'
                 }
           
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: 'asset/resource',
+                generator: {
+                    filename: 'fonts/[name][ext]'
+                }
               },
         ]
     },

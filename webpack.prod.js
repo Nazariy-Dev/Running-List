@@ -21,9 +21,9 @@ module.exports = merge(common, {
                 template: "./src/templates/template.pug",
                 inject: 'body',
                 minify: {
-                    removeAttributeQuotes: true,
-                    collapseInlineTagWhitespace: true,
-                    removeComments: true
+                    removeAttributeQuotes: false,
+                    collapseInlineTagWhitespace: false,
+                    removeComments: false
                 }
             })
         ]

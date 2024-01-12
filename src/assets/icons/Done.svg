@@ -1,0 +1,19 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="30" height="30" fill="white"/>
+<rect x="0.5" y="0.5" width="29" height="29" stroke="black"/>
+<mask id="mask0_291203_253" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30" height="30">
+<path d="M0 0H30V30H0V0Z" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_291203_253)">
+<rect x="20.3553" y="-15" width="1" height="50" transform="rotate(45 20.3553 -15)" fill="black"/>
+<rect x="23.0266" y="-12.3287" width="1" height="50" transform="rotate(45 23.0266 -12.3287)" fill="black"/>
+<rect x="25.6979" y="-9.65747" width="1" height="50" transform="rotate(45 25.6979 -9.65747)" fill="black"/>
+<rect x="28.3692" y="-6.98608" width="1" height="50" transform="rotate(45 28.3692 -6.98608)" fill="black"/>
+<rect x="31.0405" y="-4.31482" width="1" height="50" transform="rotate(45 31.0405 -4.31482)" fill="black"/>
+<rect x="33.7118" y="-1.64355" width="1" height="50" transform="rotate(45 33.7118 -1.64355)" fill="black"/>
+<rect x="36.3831" y="1.02771" width="1" height="50" transform="rotate(45 36.3831 1.02771)" fill="black"/>
+<rect x="39.0544" y="3.6991" width="1" height="50" transform="rotate(45 39.0544 3.6991)" fill="black"/>
+<rect x="41.7257" y="6.37036" width="1" height="50" transform="rotate(45 41.7257 6.37036)" fill="black"/>
+<rect x="44.397" y="9.04163" width="1" height="50" transform="rotate(45 44.397 9.04163)" fill="black"/>
+</g>
+</svg>

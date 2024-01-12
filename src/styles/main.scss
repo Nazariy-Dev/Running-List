@@ -1,4 +1,9 @@
 @import "./common/nullstyle";
 @import "./common/fonts";
-
 @import "./common/variables.scss";
+@import "./common/mixins.scss";
+@import "./common/common.scss";
+
+
+@import "./sections/header.scss";
+@import "./sections/hero.scss";

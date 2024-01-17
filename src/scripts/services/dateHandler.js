@@ -9,17 +9,18 @@ export class DateHandler{
     initWeekDates(){
         this.mondayFullDate = this.getMondayFullDate()
         this.sundayFullDate = this.getSundayFullDate()
-    }
 
-    renderDateIn(selector){
         let currentMonthName = this.getMonthName()
 
         let mondaySpecs = this.getMondaySpecs()
         let sundaySpecs = this.getSundaySpecs()
-
-        selector.html(`${currentMonthName}: <span>${mondaySpecs.mondaDate}/${mondaySpecs.mondayMonth} - ${sundaySpecs.sundaDate}/${sundaySpecs.sundayMonth}</span>`)
+        
+        return {
+            currentMonthName,
+            mondaySpecs,
+            sundaySpecs
+        }
     }
-
 
     transformDate(number){
         if(number<10){
@@ -40,8 +41,16 @@ export class DateHandler{
         let d = new Date();
         let day = d.getDay();
         let date = d.getDate();
-        let mondayDate = date - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-        return new Date(d.setDate(mondayDate))
+        let mondaDate = date - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(mondaDate))
+    }
+
+    getSundayFullDate() {
+        let d = new Date();
+        let day = d.getDay();
+        let date = d.getDate();
+        let fridayDate = date + (6 - day) + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(fridayDate))
     }
 
     getMondaySpecs(){
@@ -69,14 +78,6 @@ export class DateHandler{
         }
     }
 
-    getSundayFullDate() {
-        let d = new Date();
-        let day = d.getDay();
-        let date = d.getDate();
-        let sundayDate = date + (6 - day) + (day == 0 ? -6 : 1); // adjust when day is sunday
-        return new Date(d.setDate(sundayDate))
-    }
-
     initDatesOfDays(){
         let d = new Date()
         let mondayDate = this.mondayFullDate.getDate()
@@ -88,6 +89,5 @@ export class DateHandler{
 
         datesOfDays.unshift(this.mondayFullDate)
         datesOfDays.push(this.sundayFullDate)
-        debugger
     }
 }

@@ -12,6 +12,7 @@ let weekDateField = $('.week-card__header')
 $(document).ready(function () {
     dateHandler.initWeekDates()
     dateHandler.renderDateIn(weekDateField)
+    dateHandler.initDatesOfDays()
 
     tasksField.on("click", function(event){
         let target = event.target

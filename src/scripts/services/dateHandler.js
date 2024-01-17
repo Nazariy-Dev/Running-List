@@ -40,8 +40,8 @@ export class DateHandler{
         let d = new Date();
         let day = d.getDay();
         let date = d.getDate();
-        let mondaDate = date - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-        return new Date(d.setDate(mondaDate))
+        let mondayDate = date - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(mondayDate))
     }
 
     getMondaySpecs(){
@@ -73,7 +73,21 @@ export class DateHandler{
         let d = new Date();
         let day = d.getDay();
         let date = d.getDate();
-        let fridayDate = date + (6 - day) + (day == 0 ? -6 : 1); // adjust when day is sunday
-        return new Date(d.setDate(fridayDate))
+        let sundayDate = date + (6 - day) + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(sundayDate))
+    }
+
+    initDatesOfDays(){
+        let d = new Date()
+        let mondayDate = this.mondayFullDate.getDate()
+        let datesOfDays = []
+        for (let index = 0; index < 5; index++) {
+            datesOfDays[index] = new Date(d.setDate(++mondayDate))
+            
+        }
+
+        datesOfDays.unshift(this.mondayFullDate)
+        datesOfDays.push(this.sundayFullDate)
+        debugger
     }
 }

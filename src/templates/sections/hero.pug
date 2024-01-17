@@ -3,7 +3,8 @@ main.hero
     .container
         .hero__body
             .week-card
-                .week-card__header.section-header Month: 14/05 - 21/05
+                .week-card__header.section-header
+                    Month: 14/05 - 21/05
                 .week-card__days-line.days-line
                     .days-line__days
                         .days-line__day M
@@ -18,13 +19,13 @@ main.hero
                     - for (var i=0; i<5; i++)
                         .tasks__task.task
                             .task.marker-task
-                                .marker-task__marker 
-                                .marker-task__marker 
-                                .marker-task__marker 
-                                .marker-task__marker 
-                                .marker-task__marker 
-                                .marker-task__marker 
-                                .marker-task__marker 
+                                .marker-task__marker: .marker-task__marker-placeholder
+                                .marker-task__marker: .marker-task__marker-placeholder 
+                                .marker-task__marker: .marker-task__marker-placeholder 
+                                .marker-task__marker: .marker-task__marker-placeholder 
+                                .marker-task__marker: .marker-task__marker-placeholder 
+                                .marker-task__marker: .marker-task__marker-placeholder 
+                                .marker-task__marker: .marker-task__marker-placeholder 
                             .task__text Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
                 include weekRewiew
 

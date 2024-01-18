@@ -7,13 +7,13 @@ main.hero
                     Month: 14/05 - 21/05
                 .week-card__days-line.days-line
                     .days-line__days
-                        .days-line__day(data-full-date="") M
-                        .days-line__day(data-full-date="") T
-                        .days-line__day(data-full-date="") W
-                        .days-line__day(data-full-date="") T
-                        .days-line__day(data-full-date="") F
-                        .days-line__day(data-full-date="") S
-                        .days-line__day(data-full-date="") S
+                        .days-line__day(data-day="Monday" data-date) M
+                        .days-line__day(data-day="Tuesday" data-date) T
+                        .days-line__day(data-day="Wednesday" data-date) W
+                        .days-line__day(data-day="Thursday" data-date) T
+                        .days-line__day(data-day="Friday" data-date) F
+                        .days-line__day(data-day="Saturday" data-date) S
+                        .days-line__day(data-day="Sunday" data-date) S
                     .days-line__text Running List
                 .week-card__tasks.tasks
                     - for (var i=0; i<5; i++)

@@ -84,10 +84,11 @@ export class DateHandler{
         let datesOfDays = []
         for (let index = 0; index < 5; index++) {
             datesOfDays[index] = new Date(d.setDate(++mondayDate))
-            
         }
 
         datesOfDays.unshift(this.mondayFullDate)
         datesOfDays.push(this.sundayFullDate)
+
+        return datesOfDays;
     }
 }

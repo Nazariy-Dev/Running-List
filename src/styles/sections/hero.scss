@@ -15,7 +15,7 @@
     // .week-card__header
 
     &__header {
-        span{
+        span {
             margin-left: 15px;
         }
     }
@@ -60,31 +60,29 @@
 
 .tasks {
     margin-bottom: 130px;
-}
 
-// .tasks__marker
-.task {
-    display: flex;
-    align-items: center;
 
-    &:not(:first-child) {
-        margin-top: -1px;
+
+    &__task {
+        margin-right: 30px;
+        display: flex;
+        align-items: center;
+
+        &:not(:first-child) {
+            margin-top: -1px;
+        }
     }
-
-    &__text {}
-
-    &__marker {}
 }
 
-.marker-task {
-    margin-right: 30px;
-    display: flex;
-
+.task {
+    &__text {
+        margin-left: 30px;
+    }
 
     &__marker {
         width: 30px;
         height: 30px;
-        border: 1px solid #CCCCCC;
+        border: 1px solid #CECECE;
         position: relative;
 
         &-placeholder {
@@ -104,25 +102,12 @@
         }
 
         &:hover {
-            .marker-task__marker-placeholder {
+            .task__marker-placeholder {
                 display: block;
             }
         }
-
-        // &::after{
-        //     content: "";
-        //     background-image: url("../assets/icons/Done.svg");
-        //     opacity: .4;
-        //     display: block;
-        //     position: absolute;
-        //     width: 30px;
-        //     height: 30px;
-        //     top: -1px;
-        //     left: -1px;
-        //     display: none;
-        //     z-index: 10;
-        // }
-
-
     }
 }
+
+
+// .tasks__marker

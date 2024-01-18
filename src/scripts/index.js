@@ -10,13 +10,15 @@ let renderData = new RenderData()
 
 let tasksField = $(".tasks")
 let weekDateField = $('.week-card__header')
+let days = $('[data-day]')
+
 
 $(document).ready(function () {
     let datesSpecs = dateHandler.initWeekDates()
     let datesOfDays = dateHandler.initDatesOfDays()
 
     renderData.renderDateIn(weekDateField, datesSpecs)
-    renderData.addDatesToDays(datesOfDays)
+    renderData.addDatesToDays(datesOfDays, days)
 
     tasksField.on("click", function(event){
         let target = event.target

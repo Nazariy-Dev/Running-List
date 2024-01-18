@@ -6,10 +6,9 @@ export class RenderData {
         selector.html(`${currentMonthName}: <span>${mondaySpecs.mondaDate}/${mondaySpecs.mondayMonth} - ${sundaySpecs.sundaDate}/${sundaySpecs.sundayMonth}</span>`)
     }
 
-    addDatesToDays(datesOfDays) {
-        let days = $('[data-day]')
-        for (let index = 0; index < days.length; index++) {
-            days[index].dataset.date = datesOfDays[index]
+    addDatesToDays(datesOfDays, daysSelector) {
+        for (let index = 0; index < daysSelector.length; index++) {
+            daysSelector[index].dataset.date = datesOfDays[index]
         }
     }
 }

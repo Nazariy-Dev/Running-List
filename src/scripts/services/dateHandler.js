@@ -1,19 +1,35 @@
 export class DateHandler{
 
-    constructor(){
-        this.date = new Date();
+    constructor(date){
+        this.currentDate = date;
         this.mondayFullDate;
         this.sundayFullDate;
+        this.week
     }
 
-    initWeekDates(){
-        this.mondayFullDate = this.getMondayFullDate()
-        this.sundayFullDate = this.getSundayFullDate()
+    initWeekDates() {
+        this.week = new Array();
+        // Starting Monday not Sunday 
+        var first = ((this.currentDate.getDate() - this.currentDate.getDay()) + 1);
+        for (var i = 0; i < 7; i++) {
+          this.week.push(
+            new Date(this.currentDate.setDate(first++))
+          );
+        }
+        // return week;
+        console.log(this.week)
+        return this.week
+    }
+
+    getDatesSpecs(){
+        this.mondayFullDate = this.week[0]
+        this.sundayFullDate = this.week[6]
 
         let currentMonthName = this.getMonthName()
 
         let mondaySpecs = this.getMondaySpecs()
         let sundaySpecs = this.getSundaySpecs()
+        
         
         return {
             currentMonthName,
@@ -34,23 +50,7 @@ export class DateHandler{
         let months= ["January","February","March","April","May","June","July",
             "August","September","October","November","December"];
         
-        return months[this.date.getMonth()]
-    }
-
-    getMondayFullDate() {
-        let d = new Date();
-        let day = d.getDay();
-        let date = d.getDate();
-        let mondaDate = date - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-        return new Date(d.setDate(mondaDate))
-    }
-
-    getSundayFullDate() {
-        let d = new Date();
-        let day = d.getDay();
-        let date = d.getDate();
-        let fridayDate = date + (6 - day) + (day == 0 ? -6 : 1); // adjust when day is sunday
-        return new Date(d.setDate(fridayDate))
+        return months[this.currentDate.getMonth()]
     }
 
     getMondaySpecs(){
@@ -76,19 +76,5 @@ export class DateHandler{
             sundaDate,
             sundayMonth
         }
-    }
-
-    initDatesOfDays(){
-        let d = new Date()
-        let mondayDate = this.mondayFullDate.getDate()
-        let datesOfDays = []
-        for (let index = 0; index < 5; index++) {
-            datesOfDays[index] = new Date(d.setDate(++mondayDate))
-        }
-
-        datesOfDays.unshift(this.mondayFullDate)
-        datesOfDays.push(this.sundayFullDate)
-
-        return datesOfDays;
     }
 }

@@ -16,16 +16,16 @@ main.hero
                         .days-line__day(data-day="Sunday" data-date) S
                     .days-line__text Running List
                 .week-card__tasks.tasks
-                    - for (var i=0; i<4; i++)
+                    - let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                    - for (var i=0; i<1; i++)
                         .tasks__task.task
-                            .task__marker: .task__marker-placeholder
-                            .task__marker: .task__marker-placeholder 
-                            .task__marker: .task__marker-placeholder 
-                            .task__marker: .task__marker-placeholder 
-                            .task__marker: .task__marker-placeholder 
-                            .task__marker: .task__marker-placeholder 
-                            .task__marker: .task__marker-placeholder 
+                            -for (var i =0; i<7; i++)
+                                .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
+
                             input(type="text" placeholder="Task").task__text
+                    .tasks__hover
+                            -for (var i =0; i<7; i++)
+                                .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
                 include weekRewiew
 
 

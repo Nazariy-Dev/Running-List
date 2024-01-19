@@ -59,6 +59,7 @@
 }
 
 .tasks {
+    position: relative;
     margin-bottom: 130px;
 
 
@@ -71,6 +72,14 @@
         &:not(:first-child) {
             margin-top: -1px;
         }
+    }
+
+    &__hover{
+        display: flex;
+        position: absolute;
+        top: calc(100% - 1px);
+        left: 0;
+        visibility: hidden;
     }
 }
 
@@ -107,6 +116,11 @@
             }
         }
     }
+
+}
+
+.task:hover ~ .tasks__hover, .tasks__hover:hover{
+    visibility: visible;
 }
 
 

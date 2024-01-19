@@ -65,7 +65,6 @@
 
 
     &__task {
-        margin-right: 30px;
         display: flex;
         align-items: center;
 
@@ -74,7 +73,7 @@
         }
     }
 
-    &__hover{
+    &__hover {
         display: flex;
         position: absolute;
         top: calc(100% - 1px);
@@ -84,8 +83,10 @@
 }
 
 .task {
-    &__text {
+    &__label {
         margin-left: 30px;
+        width: auto;
+
     }
 
     &__marker {
@@ -117,11 +118,20 @@
         }
     }
 
+    &__buttons {
+        margin-left: 26px;
+        display: none;
+    }
+
+    &__button {
+        &:not(:last-child) {
+            margin-right: 8px;
+        }
+
+    }
+
 }
 
-.task:hover ~ .tasks__hover, .tasks__hover:hover{
+.tasks__hover:hover {
     visibility: visible;
 }
-
-
-// .tasks__marker

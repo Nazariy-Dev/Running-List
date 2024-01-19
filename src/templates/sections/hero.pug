@@ -22,10 +22,16 @@ main.hero
                             -for (var i =0; i<7; i++)
                                 .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
 
-                            input(type="text" placeholder="Task").task__text
-                    .tasks__hover
-                            -for (var i =0; i<7; i++)
-                                .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
+                            .input-sizer.task__label
+                                input.task__input(type="text" onInput="this.parentNode.dataset.value = this.value" size="4" placeholder="Task")
+                           
+                            .task__buttons
+                                button.task__button.task__button-done Done
+                                button.task__button.task__button-cancel Cancel
+                    //- .tasks__hover
+                    //-         -for (var i =0; i<7; i++)
+                    //-             .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
+                    
                 include weekRewiew
 
 

@@ -16,8 +16,8 @@ main.hero
                     - for (var i=0; i<1; i++)
                         .tasks__task.task(data-id="1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed")
                             -for (var i = 1; i<7; i++)
-                                .task__marker: .task__marker-placeholder(data-day-reference=i)  
-                            .task__marker: .task__marker-placeholder(data-day-reference=0)  
+                                .task__marker: .task__marker-placeholder(data-day-reference=i data-state)  
+                            .task__marker: .task__marker-placeholder(data-day-reference=0 data-state)  
 
                             .input-sizer.task__label
                                 input.task__input(type="text" onInput="this.parentNode.dataset.value = this.value" size="4" placeholder="Task")

@@ -31,14 +31,16 @@ $(document).ready(function () {
 
         if (target.hasClass('task__marker-placeholder')){
             taskHandler.getTaskReady(target)
+            taskHandler.addTask(target)
         }
 
         if(target.hasClass("task__button-done")){
-            taskHandler.addTask()
+            taskHandler.addTask(target)
         }
 
         if (target.hasClass("task__input")){
-            // taskHandler.updateTask(target)
+            taskHandler.updateTaskName(target)
         }
+
     })
 });

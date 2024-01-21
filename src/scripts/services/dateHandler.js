@@ -17,7 +17,6 @@ export class DateHandler{
             new Date(this.currentDate.setDate(first++))
           );
         }
-        console.log(this.week)
         return this.week
     }
 

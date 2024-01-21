@@ -78,7 +78,8 @@
         position: absolute;
         top: calc(100% - 1px);
         left: 0;
-        visibility: hidden;
+        opacity: 0;
+        // visibility: hidden;
     }
 }
 
@@ -119,19 +120,21 @@
     }
 
     &__buttons {
-        margin-left: 26px;
-        display: none;
+        &-wrapper {
+            margin-left: 26px;
+            display: none;
+        }
     }
 
     &__button {
         &:not(:last-child) {
             margin-right: 8px;
         }
-
     }
 
 }
 
 .tasks__hover:hover {
-    visibility: visible;
+    opacity: 1;
+
 }

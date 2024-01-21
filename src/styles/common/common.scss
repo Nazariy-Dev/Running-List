@@ -16,8 +16,11 @@ body {
 }
 
 .task {
+    &__buttons{
+        display: flex;
+    }
     &__button {
-        display: inline-flex;
+        display: flex;
         padding: 5px 9px;
         justify-content: center;
         align-items: center;

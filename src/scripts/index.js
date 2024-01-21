@@ -24,12 +24,12 @@ $(document).ready(function () {
     renderData.renderDateIn(weekDateField, datesSpecs)
     renderData.addDatesToDays(datesOfDays, days)
 
-    hoverHander.hoverOverTask(taskMarker)
+    // hoverHander.hoverOverTask(taskMarker)
 
     tasksField.on("click", function(event){
         let target = $(event.target);
 
-        if (target.hasClass('task__marker-placeholder')){
+        if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover"){
             taskHandler.getTaskReady(target)
             taskHandler.addTask(target)
         }
@@ -40,6 +40,10 @@ $(document).ready(function () {
 
         if (target.hasClass("task__input")){
             taskHandler.updateTaskName(target)
+        }
+
+        if (target[0].dataset.hover == "hover"){
+            taskHandler.addTaskField(target)
         }
 
     })

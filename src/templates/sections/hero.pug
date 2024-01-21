@@ -13,22 +13,23 @@ main.hero
                         .days-line__day(data-day=0 data-date) S
                     .days-line__text Running List
                 .week-card__tasks.tasks
-                    - for (var i=0; i<1; i++)
+                    - for (let i=0; i<1; i++)
                         .tasks__task.task(data-id="1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed")
-                            -for (var i = 1; i<7; i++)
+                            -for (let i = 1; i<7; i++)
                                 .task__marker: .task__marker-placeholder(data-day-reference=i data-state)  
                             .task__marker: .task__marker-placeholder(data-day-reference=0 data-state)  
 
                             .input-sizer.task__label
                                 input.task__input(type="text" onInput="this.parentNode.dataset.value = this.value" size="4" placeholder="Task")
                            
-                            .task__buttons
-                                button.task__button.task__button-done Done
-                                button.task__button.task__button-cancel Cancel
-                    //- .tasks__hover
-                    //-         -for (var i =0; i<7; i++)
-                    //-             .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
-                    
+                            .task__buttons-wrapper
+                                .task__buttons
+                                    button.task__button.task__button-done Done
+                                    button.task__button.task__button-cancel Cancel
+                    .tasks__hover
+                        -for (let i =1; i<7; i++)
+                            .task__marker: .task__marker-placeholder(data-day-reference=i data-hover="hover")  
+                        .task__marker: .task__marker-placeholder(data-day-reference=0 data-hover="hover")  
                 //- include weekRewiew
 
 

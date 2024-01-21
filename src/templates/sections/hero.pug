@@ -7,20 +7,17 @@ main.hero
                     Month: 14/05 - 21/05
                 .week-card__days-line.days-line
                     .days-line__days
-                        .days-line__day(data-day="Monday" data-date) M
-                        .days-line__day(data-day="Tuesday" data-date) T
-                        .days-line__day(data-day="Wednesday" data-date) W
-                        .days-line__day(data-day="Thursday" data-date) T
-                        .days-line__day(data-day="Friday" data-date) F
-                        .days-line__day(data-day="Saturday" data-date) S
-                        .days-line__day(data-day="Sunday" data-date) S
+                        -let daysOFWeek = ["M", "T", "W", "T", "F", "S"]
+                        -for (var i = 1, index=0; i<7; i++)
+                            .days-line__day(data-day=i data-date)=daysOFWeek[index++]
+                        .days-line__day(data-day=0 data-date) S
                     .days-line__text Running List
                 .week-card__tasks.tasks
-                    - let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
                     - for (var i=0; i<1; i++)
-                        .tasks__task.task
-                            -for (var i =0; i<7; i++)
-                                .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
+                        .tasks__task.task(data-id="1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed")
+                            -for (var i = 1; i<7; i++)
+                                .task__marker: .task__marker-placeholder(data-day-reference=i)  
+                            .task__marker: .task__marker-placeholder(data-day-reference=0)  
 
                             .input-sizer.task__label
                                 input.task__input(type="text" onInput="this.parentNode.dataset.value = this.value" size="4" placeholder="Task")
@@ -32,6 +29,6 @@ main.hero
                     //-         -for (var i =0; i<7; i++)
                     //-             .task__marker: .task__marker-placeholder(data-day-reference=days[i])  
                     
-                include weekRewiew
+                //- include weekRewiew
 
 

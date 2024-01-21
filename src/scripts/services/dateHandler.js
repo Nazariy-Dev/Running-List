@@ -9,13 +9,15 @@ export class DateHandler{
 
     initWeekDates() {
         this.week = new Array();
-        // Starting Monday not Sunday 
-        var first = ((this.currentDate.getDate() - this.currentDate.getDay()) + 1);
+        let date = this.currentDate.getDate()
+        let day = this.currentDate.getDay()
+        var first = ((date - day) + (day == 0 ? -6 : 1));
         for (var i = 0; i < 7; i++) {
           this.week.push(
             new Date(this.currentDate.setDate(first++))
           );
         }
+        console.log(this.week)
         return this.week
     }
 

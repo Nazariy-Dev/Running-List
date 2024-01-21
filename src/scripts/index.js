@@ -5,7 +5,6 @@ import { DateHandler } from "./services/dateHandler";
 import { RenderData } from "./services/renderData";
 import { HoverHader } from "./services/hoverHander";
 import { TaskHandler } from "./services/taskHandler";
-import { Task } from "./services/task";
 
 let dateHandler = new DateHandler(new Date);
 let renderData = new RenderData()
@@ -31,13 +30,15 @@ $(document).ready(function () {
         let target = $(event.target);
 
         if (target.hasClass('task__marker-placeholder')){
-            taskHandler.addBackround(target)
-            let task = new Task(target)
-            task.addTask()
-            task.boxClick()
+            taskHandler.getTaskReady(target)
         }
-        if(target.hasClass(".task__button-done")){
+
+        if(target.hasClass("task__button-done")){
             taskHandler.addTask()
+        }
+
+        if (target.hasClass("task__input")){
+            // taskHandler.updateTask(target)
         }
     })
 });

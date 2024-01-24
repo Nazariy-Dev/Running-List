@@ -1,43 +1,72 @@
 import $ from "jquery";
 import { tasks } from "./tasksDB";
 import { v4 as uuidv4 } from 'uuid';
+import doneURl from "../../assets/icons/Done.svg"
+import addedURl from "../../assets/icons/Added.svg"
 
 export class TaskHandler {
     getTaskReady(boxTarget) {
         boxTarget = $(boxTarget)
-        boxTarget[0].dataset.state = "assigned"
-        this.addBackround(boxTarget)
+        let task = boxTarget.closest(".task")
+        let input = task.find('.task__input')
+
+        // debugger
+        if (boxTarget[0].dataset.state == "assigned") {
+            boxTarget[0].dataset.state = "done"
+            this.addBackround(boxTarget, "done")
+        } else if(boxTarget[0].dataset.state == "done"){
+            this.addBackround(boxTarget, "done")
+        } else {
+            console.log(input[0].value.length)
+            if(input[0].value.length == 0) {
+                this.updateTaskName(input)
+            }
+            boxTarget[0].dataset.state = "assigned"
+            this.addBackround(boxTarget, "assigned")
+        }
     }
 
-    addBackround(boxTarget) {
+    addBackround(boxTarget, state) {
         if (boxTarget.closest('.task').length != 0) {
+            let url;
+            if (state == "assigned") {
+                url = addedURl
+            } else {
+                url = doneURl
+            }
+            
             boxTarget.css({
-                "backgroundImage": 'url(../assets/icons/Added.svg")',
+                "background-image": `url('${url}')`,
                 "display": "block",
                 "opacity": "1"
             })
-            console.log()
         }
     }
 
     addTask(taskElem) {
+        console.log("add task")
         let task = taskElem.closest(".task")
         let input = task.find('.task__label')
         let buttons = task.find(".task__buttons-wrapper")
-        let assignedDays = task.find("[data-state='assigned']")
+        let assignedDays = task.find("[data-state]")
+            .filter((index, value) => {
+                return value.dataset.state.length > 0
+            })
 
         let dateData = []
-        let taskName = input[0].dataset.value
+        let taskName = input[0].dataset.value || "No title"
 
         let isFound = false
 
         assignedDays.each((index, day) => {
             let dayReference = day.dataset.dayReference
             let dates = $('.days-line__days').find(`[data-day=${dayReference}]`)[0].dataset.date
+            let state = day.dataset.state
 
             dateData.push({
                 dayOfWeek: dayReference,
-                dates
+                dates,
+                state
             })
         })
 
@@ -51,7 +80,7 @@ export class TaskHandler {
             }
         })
 
-        if (!isFound && taskName) {
+        if (!isFound) {
             tasks.push({
                 id: task[0].dataset.id,
                 dates: dateData,
@@ -59,10 +88,8 @@ export class TaskHandler {
             })
         }
 
-        console.log(tasks)
-
-        if(buttons.css("displau") != "none")
-        buttons.fadeOut(50)
+        if (buttons.css("display") != "none" && taskElem.hasClass("task__button-done"))
+            buttons.fadeOut(50)
 
     }
 

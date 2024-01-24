@@ -32,17 +32,11 @@ $(document).ready(function () {
         if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover"){
             taskHandler.getTaskReady(target)
             taskHandler.addTask(target)
-        }
-
-        if(target.hasClass("task__button-done")){
+        } else if(target.hasClass("task__button-done")){
             taskHandler.addTask(target)
-        }
-
-        if (target.hasClass("task__input")){
+        } else if (target.hasClass("task__input")){
             taskHandler.updateTaskName(target)
-        }
-
-        if (target[0].dataset.hover == "hover"){
+        } else if (target[0].dataset.hover == "hover"){
             taskHandler.addTaskField(target)
         }
 

@@ -29,11 +29,13 @@ $(document).ready(function () {
     tasksField.on("click", function(event){
         let target = $(event.target);
 
-        if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover"){
+        if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && target[0].dataset.state != "done"){
             taskHandler.getTaskReady(target)
             taskHandler.addTask(target)
         } else if(target.hasClass("task__button-done")){
             taskHandler.addTask(target)
+        } else if(target.hasClass("task__button-cancel")){
+            taskHandler.candelAdddition(target)
         } else if (target.hasClass("task__input")){
             taskHandler.updateTaskName(target)
         } else if (target[0].dataset.hover == "hover"){

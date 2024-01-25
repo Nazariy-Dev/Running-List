@@ -124,4 +124,12 @@ export class TaskHandler {
         this.addTask(day)
     }
 
+    candelAdddition(button){
+        let task = button.closest(".task")
+        let input = task.find(".task__input")
+        let buttons = task.find(".task__buttons-wrapper")
+        buttons.fadeOut(50)
+        input.blur()
+    }
+
 }

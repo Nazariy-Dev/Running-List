@@ -138,3 +138,32 @@
     opacity: 1;
 
 }
+
+.more-box {
+
+    &_toggle {
+        display: flex;
+    }
+
+    transition: .3s ease;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    width: 45px;
+    padding: 7px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 6px;
+    background: rgba(52, 120, 246, 0.60);
+    backdrop-filter: blur(2px);
+
+    &__image {
+        cursor: pointer;
+    }
+}

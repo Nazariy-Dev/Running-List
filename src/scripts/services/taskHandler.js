@@ -3,6 +3,9 @@ import { tasks } from "./tasksDB";
 import { v4 as uuidv4 } from 'uuid';
 import doneURl from "../../assets/icons/Done.svg"
 import addedURl from "../../assets/icons/Added.svg"
+import undoneUrl from "../../assets/icons/Undone.svg"
+import deligatedUrl from "../../assets/icons/Deligate.svg"
+
 
 export class TaskHandler {
     getTaskReady(boxTarget) {
@@ -31,9 +34,15 @@ export class TaskHandler {
             let url;
             if (state == "assigned") {
                 url = addedURl
-            } else {
+            } else if (state == "done"){
                 url = doneURl
-            }
+            
+            } else if (state == "undone"){
+                url = undoneUrl
+            
+            } else if (state == "deligated"){
+                url = deligatedUrl
+            } 
             
             boxTarget.css({
                 "background-image": `url('${url}')`,
@@ -131,5 +140,6 @@ export class TaskHandler {
         buttons.fadeOut(50)
         input.blur()
     }
+
 
 }

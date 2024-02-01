@@ -29,6 +29,11 @@ main.hero
                         -for (let i =1; i<7; i++)
                             .task__marker: .task__marker-placeholder(data-day-reference=i data-hover="hover")  
                         .task__marker: .task__marker-placeholder(data-day-reference=0 data-hover="hover")  
+                    .task__more-box.more-box
+                        img(src=require("../../assets/icons/Done.svg") data-state="done", alt="").more-box__image
+                        img(src=require("../../assets/icons/Deligate.svg") data-state="deligated", alt="").more-box__image
+                        img(src=require("../../assets/icons/Undone.svg") data-state="undone", alt="").more-box__image
+                        img(src=require("../../assets/icons/Added.svg") data-state="assigned", alt="").more-box__image
                 //- include weekRewiew
 
 

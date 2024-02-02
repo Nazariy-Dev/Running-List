@@ -1,8 +1,8 @@
-import $, { event } from "jquery";
+import $ from "jquery";
 import { TaskHandler } from "./taskHandler";
 
 let taskHandler = new TaskHandler()
-export class ShowAssets {
+export class ShowBoxMenu {
     constructor() {
         this.boxMenu = $(".more-box")
         this.boxTarget;
@@ -27,6 +27,8 @@ export class ShowAssets {
             if (target.hasClass("more-box__image")) {
                 let state = target[0].dataset.state
                 taskHandler.addBackround(box, state)
+                taskHandler.getTaskReadyFromMenu(box, state)
+                taskHandler.addTask(box)
             }
         })
     }

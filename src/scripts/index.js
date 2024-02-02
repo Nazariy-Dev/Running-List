@@ -3,12 +3,12 @@ import $, { event } from "jquery";
 
 import { DateHandler } from "./services/dateHandler";
 import { RenderData } from "./services/renderData";
-import { ShowAssets } from "./services/hoverHander";
+import { ShowBoxMenu } from "./services/hoverHander";
 import { TaskHandler } from "./services/taskHandler";
 
 let dateHandler = new DateHandler(new Date);
 let renderData = new RenderData()
-let hoverHander = new ShowAssets()
+let showBoxMenu = new ShowBoxMenu()
 let taskHandler = new TaskHandler()
 
 let tasksField = $(".tasks")
@@ -30,7 +30,6 @@ $(document).ready(function () {
 
     $(document).on("click", function (event) {
         if (!isHolding && !clickDisabled) {
-            console.log("mouseup")
             let target = $(event.target);
             if (target.closest(".more-box").length == 0 || target.hasClass("more-box__image")) {
                 $(".more-box").removeClass("more-box_toggle")
@@ -42,7 +41,7 @@ $(document).ready(function () {
     tasksField.on("click", function (event) {
         if (!isHolding && !clickDisabled) {
             let target = $(event.target);
-            if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && target[0].dataset.state != "done") {
+            if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && (target[0].dataset.state == "" || target[0].dataset.state == "assigned")) {
                 taskHandler.getTaskReady(target)
                 taskHandler.addTask(target)
             } else if (target.hasClass("task__button-done")) {
@@ -63,7 +62,7 @@ $(document).ready(function () {
 
         if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && firstHold) {
             timeoutId = setTimeout(function () {
-                hoverHander.showBoxMenu(target)
+                showBoxMenu.showBoxMenu(target)
 
                 clickDisabled = true;
             }, 500);

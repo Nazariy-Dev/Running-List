@@ -142,16 +142,19 @@
 .more-box {
 
     &_toggle {
-        display: flex;
+        visibility: visible;
+        transform: scale(1);
     }
 
-    transition: .3s ease;
+    transition: transform .1s ease;
+    transform: scale(0);
     position: absolute;
 
     top: 0;
     left: 0;
     z-index: 100;
-    display: none;
+    display: flex;
+    visibility: hidden;
     flex-direction: column;
     width: 45px;
     padding: 7px;

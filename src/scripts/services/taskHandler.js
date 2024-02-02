@@ -13,20 +13,26 @@ export class TaskHandler {
         let task = boxTarget.closest(".task")
         let input = task.find('.task__input')
 
-        // debugger
         if (boxTarget[0].dataset.state == "assigned") {
             boxTarget[0].dataset.state = "done"
             this.addBackround(boxTarget, "done")
         } else if(boxTarget[0].dataset.state == "done"){
             this.addBackround(boxTarget, "done")
         } else {
-            console.log(input[0].value.length)
             if(input[0].value.length == 0) {
                 this.updateTaskName(input)
             }
             boxTarget[0].dataset.state = "assigned"
             this.addBackround(boxTarget, "assigned")
         }
+    }
+
+    getTaskReadyFromMenu(boxTarget, state){
+        boxTarget = $(boxTarget)
+        let task = boxTarget.closest(".task")
+        let input = task.find('.task__input')
+
+        boxTarget[0].dataset.state = state
     }
 
     addBackround(boxTarget, state) {
@@ -69,6 +75,7 @@ export class TaskHandler {
 
         assignedDays.each((index, day) => {
             let dayReference = day.dataset.dayReference
+            // let dateSpecs = []
             let dates = $('.days-line__days').find(`[data-day=${dayReference}]`)[0].dataset.date
             let state = day.dataset.state
 
@@ -99,6 +106,8 @@ export class TaskHandler {
 
         if (buttons.css("display") != "none" && taskElem.hasClass("task__button-done"))
             buttons.fadeOut(50)
+
+        console.log(tasks)
 
     }
 
@@ -140,6 +149,8 @@ export class TaskHandler {
         buttons.fadeOut(50)
         input.blur()
     }
+
+    
 
 
 }

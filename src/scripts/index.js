@@ -1,35 +1,27 @@
 import "../styles/main.scss"
-import $, { event } from "jquery";
+import $ from "jquery";
 
 import { DateHandler } from "./services/dateHandler";
 import { RenderData } from "./services/renderData";
 import { ShowBoxMenu } from "./services/hoverHander";
 import { TaskHandler } from "./services/taskHandler";
+import { InitDates } from "./services/initDates";
 
-let dateHandler = new DateHandler(new Date());
-let renderData = new RenderData()
 let showBoxMenu = new ShowBoxMenu()
 let taskHandler = new TaskHandler()
+let initDates = new InitDates()
 
 let tasksField = $(".tasks")
-let taskMarker = $(".task__marker")
-let weekDateField = $('.week-card__header')
-let days = $('[data-day]')
-
 
 $(document).ready(function () {
-    var isHolding = false;
     var clickDisabled = false;
     let timeoutId = 0;
     let firstHold = true;
 
-    let datesOfDays = dateHandler.initWeekDates()
-    let datesSpecs = dateHandler.getDatesSpecs()
-    renderData.renderDateIn(weekDateField, datesSpecs)
-    renderData.addDatesToDays(datesOfDays, days)
+    initDates.updateAndRenderDates()
 
     $(document).on("click", function (event) {
-        if (!isHolding && !clickDisabled) {
+        if (!clickDisabled) {
             let target = $(event.target);
             if (target.closest(".more-box").length == 0 || target.hasClass("more-box__image")) {
                 $(".more-box").removeClass("more-box_toggle")
@@ -39,7 +31,7 @@ $(document).ready(function () {
     })
 
     tasksField.on("click", function (event) {
-        if (!isHolding && !clickDisabled) {
+        if (!clickDisabled) {
             let target = $(event.target);
             if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && (target[0].dataset.state == "" || target[0].dataset.state == "assigned")) {
                 taskHandler.getTaskReady(target)
@@ -57,7 +49,6 @@ $(document).ready(function () {
     })
 
     tasksField.on("mousedown", function (event) {
-        isHolding = true;
         let target = $(event.target);
 
         if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && firstHold) {
@@ -69,7 +60,6 @@ $(document).ready(function () {
         }
     }).on('mouseleave mouseup', function () {
         clearTimeout(timeoutId);
-        isHolding = false;
 
         setTimeout(function () {
             clickDisabled = false;

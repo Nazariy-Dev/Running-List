@@ -3,15 +3,17 @@
     // .hero__body
 
     &__body {
+        display: block;
+
         background-color: #fff;
-        height: 731px;
+        padding-top: 52px;
+        padding-left: 125px;
+        padding-right: 125px;
     }
 }
 
 .week-card {
-    padding-top: 52px;
-    padding-left: 125px;
-    padding-right: 125px;
+
     // .week-card__header
 
     &__header {

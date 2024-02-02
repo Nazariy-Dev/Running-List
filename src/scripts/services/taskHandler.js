@@ -1,11 +1,14 @@
 import $ from "jquery";
 import { tasks } from "./tasksDB";
 import { v4 as uuidv4 } from 'uuid';
+import { InitDates } from "./initDates";
+
 import doneURl from "../../assets/icons/Done.svg"
 import addedURl from "../../assets/icons/Added.svg"
 import undoneUrl from "../../assets/icons/Undone.svg"
 import deligatedUrl from "../../assets/icons/Deligate.svg"
 
+let initDates = new InitDates()
 
 export class TaskHandler {
     getTaskReady(boxTarget) {
@@ -60,6 +63,8 @@ export class TaskHandler {
 
     addTask(taskElem) {
         console.log("add task")
+        initDates.updateAndRenderDates()
+        
         let task = taskElem.closest(".task")
         let input = task.find('.task__label')
         let buttons = task.find(".task__buttons-wrapper")

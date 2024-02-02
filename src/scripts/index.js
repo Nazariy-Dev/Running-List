@@ -6,7 +6,7 @@ import { RenderData } from "./services/renderData";
 import { ShowBoxMenu } from "./services/hoverHander";
 import { TaskHandler } from "./services/taskHandler";
 
-let dateHandler = new DateHandler(new Date);
+let dateHandler = new DateHandler(new Date());
 let renderData = new RenderData()
 let showBoxMenu = new ShowBoxMenu()
 let taskHandler = new TaskHandler()

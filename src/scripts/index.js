@@ -11,6 +11,8 @@ let showBoxMenu = new ShowBoxMenu()
 let taskHandler = new TaskHandler()
 let initDates = new InitDates()
 
+let weekTextInput = $(".week-rewiew__text")
+let weekContainer = $(".week-rewiew")
 let tasksField = $(".tasks")
 
 $(document).ready(function () {
@@ -21,13 +23,25 @@ $(document).ready(function () {
     initDates.updateAndRenderDates()
 
     $(document).on("click", function (event) {
+        let target = $(event.target);
         if (!clickDisabled) {
-            let target = $(event.target);
             if (target.closest(".more-box").length == 0 || target.hasClass("more-box__image")) {
                 $(".more-box").removeClass("more-box_toggle")
                 $(".more-box").off("click")
             }
         }
+        
+        if(target.closest(".week-rewiew")){
+            if(target.hasClass("task__button-done")){
+                let weekText = $(".week-rewiew__text").val()
+                console.log(weekText)
+            }
+        }
+    })
+
+    weekTextInput.on("focus", (event)=>{
+        let buttons = weekContainer.find(".task__buttons-wrapper")
+        buttons.fadeIn(50)
     })
 
     tasksField.on("click", function (event) {

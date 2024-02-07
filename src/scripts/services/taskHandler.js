@@ -109,8 +109,9 @@ export class TaskHandler {
             })
         }
 
-        if (buttons.css("display") != "none" && taskElem.hasClass("task__button-done"))
+        if (buttons.css("display") != "none" && !taskElem.hasClass("task__marker-placeholder"))
             buttons.fadeOut(50)
+            
 
         console.log(tasks)
 
@@ -121,6 +122,13 @@ export class TaskHandler {
         let buttons = task.find(".task__buttons-wrapper")
         buttons.fadeIn(50)
         input.select()
+
+        input.on("keyup", (e)=>{
+            if(e.key === 'Enter' || e.keyCode === 13){
+                this.addTask(input)
+                input.off("keyup")
+            }
+        })
     }
 
     addTaskField(boxTarget) {

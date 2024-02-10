@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { tasks } from "./tasksDB";
+import { week } from "./tasksDB";
 import { v4 as uuidv4 } from 'uuid';
 import { InitDates } from "./initDates";
 
@@ -91,7 +91,7 @@ export class TaskHandler {
             })
         })
 
-        tasks.forEach((taskDB) => {
+        week.tasks.forEach((taskDB) => {
             if (task[0].dataset.id == taskDB.id) {
                 isFound = true
 
@@ -102,7 +102,7 @@ export class TaskHandler {
         })
 
         if (!isFound) {
-            tasks.push({
+            week.tasks.push({
                 id: task[0].dataset.id,
                 dates: dateData,
                 taskName,
@@ -112,8 +112,8 @@ export class TaskHandler {
         if (buttons.css("display") != "none" && !taskElem.hasClass("task__marker-placeholder"))
             buttons.fadeOut(50)
             
-
-        console.log(tasks)
+        console.log(JSON.stringify(week))
+     
 
     }
 
@@ -163,7 +163,9 @@ export class TaskHandler {
         input.blur()
     }
 
-    
-
+    addWeekInfo(weekText){
+        week.weekReview = weekText
+        console.log(week)
+    }
 
 }

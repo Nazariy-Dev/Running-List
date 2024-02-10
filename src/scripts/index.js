@@ -1,19 +1,29 @@
 import "../styles/main.scss"
 import $ from "jquery";
 
+
+
 import { DateHandler } from "./services/dateHandler";
-import { RenderData } from "./services/renderData";
 import { ShowBoxMenu } from "./services/hoverHander";
 import { TaskHandler } from "./services/taskHandler";
 import { InitDates } from "./services/initDates";
+import { Messages } from "./services/messages";
+import { WeekHandler } from "./services/weekHander";
 
 let showBoxMenu = new ShowBoxMenu()
 let taskHandler = new TaskHandler()
 let initDates = new InitDates()
+let messages = new Messages()
+let weekHandler = new WeekHandler()
+let dateHandlerMain = new DateHandler(new Date())
 
+let heroBody = $(".hero__body")
 let weekTextInput = $(".week-rewiew__text")
 let weekContainer = $(".week-rewiew")
 let tasksField = $(".tasks")
+let weekButtons = weekContainer.find(".task__buttons-wrapper")
+let dateInput = $("#date-input")
+
 
 $(document).ready(function () {
     var clickDisabled = false;
@@ -21,6 +31,15 @@ $(document).ready(function () {
     let firstHold = true;
 
     initDates.updateAndRenderDates()
+    // initDates.addMondayDate()
+    let daysOfWeek = dateHandlerMain.initWeekDates()
+    let mondayDate = daysOfWeek[0]
+
+    let week = weekHandler.findWeek(mondayDate)
+    console.log(week)
+
+    weekHandler.renderWeek(week, heroBody, tasksField, weekTextInput)
+
 
     $(document).on("click", function (event) {
         let target = $(event.target);
@@ -30,18 +49,36 @@ $(document).ready(function () {
                 $(".more-box").off("click")
             }
         }
-        
-        if(target.closest(".week-rewiew")){
-            if(target.hasClass("task__button-done")){
+
+        if (target.closest(".week-rewiew").length != 0) {
+            if (target.hasClass("task__button-done")) {
                 let weekText = $(".week-rewiew__text").val()
-                console.log(weekText)
+                taskHandler.addWeekInfo(weekText)
+                weekButtons.fadeOut(50)
+            } else if (target.hasClass("task__button-cancel")) {
+                console.log(target.closest(".week-rewiew"))
+                let exitConfirmed = messages.confirmExit()
+                if (exitConfirmed)
+                    weekButtons.fadeOut(50)
             }
+
         }
     })
 
-    weekTextInput.on("focus", (event)=>{
-        let buttons = weekContainer.find(".task__buttons-wrapper")
-        buttons.fadeIn(50)
+    dateInput.on("change", () => {
+        let inputDate = dateInput.val()
+        let date = new Date(inputDate)
+        let dateHandler = new DateHandler(date)
+
+        let daysOfWeek = dateHandler.initWeekDates()
+        let mondaDate = daysOfWeek[0]
+
+        let week = weekHandler.findWeek(mondaDate)
+
+    })
+
+    weekTextInput.on("focus", (event) => {
+        weekButtons.fadeIn(50)
     })
 
     tasksField.on("click", function (event) {
@@ -53,7 +90,9 @@ $(document).ready(function () {
             } else if (target.hasClass("task__button-done")) {
                 taskHandler.addTask(target)
             } else if (target.hasClass("task__button-cancel")) {
-                taskHandler.candelAdddition(target)
+                let exitConfirmed = messages.confirmExit()
+                if (exitConfirmed)
+                    taskHandler.candelAdddition(target)
             } else if (target.hasClass("task__input")) {
                 taskHandler.updateTaskName(target)
             } else if (target[0].dataset.hover == "hover") {

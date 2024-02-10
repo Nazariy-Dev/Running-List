@@ -11,4 +11,6 @@ export class RenderData {
             daysSelector[index].dataset.date = datesOfDays[index]
         }
     }
+
+    
 }

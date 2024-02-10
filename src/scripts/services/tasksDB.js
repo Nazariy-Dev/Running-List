@@ -1,1 +1,5 @@
-export let tasks = []
+export let week = {
+    mondayDate: "",
+    tasks: [],
+    weekReview: ""
+}

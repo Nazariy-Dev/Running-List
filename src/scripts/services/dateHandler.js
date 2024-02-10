@@ -9,14 +9,17 @@ export class DateHandler {
 
     initWeekDates() {
         this.week = new Array();
+        let stringDate = JSON.stringify(this.currentDate)
+        let constDate = JSON.parse(stringDate)
         let date = this.currentDate.getDate()
         let day = this.currentDate.getDay()
 
         let first = ((date - day) + (day == 0 ? -6 : 1));
-        
+
         for (let i = 0; i < 7; i++) {
-            let newDate = new Date(new Date().setDate(first++))
-            this.week.push( newDate );
+            let newDate = new Date(this.currentDate.setDate(first++))
+            this.week.push(newDate);
+            this.currentDate = new Date(constDate)
         }
         return this.week
     }
@@ -78,5 +81,5 @@ export class DateHandler {
         }
     }
 
- 
+
 }

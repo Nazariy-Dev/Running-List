@@ -63,7 +63,7 @@ export class TaskHandler {
 
     addTask(taskElem) {
         console.log("add task")
-        initDates.updateAndRenderDates()
+        initDates.updateAndRenderDates(new Date())
         
         let task = taskElem.closest(".task")
         let input = task.find('.task__label')

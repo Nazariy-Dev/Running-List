@@ -1,8 +1,6 @@
 import "../styles/main.scss"
 import $ from "jquery";
 
-
-
 import { DateHandler } from "./services/dateHandler";
 import { ShowBoxMenu } from "./services/hoverHander";
 import { TaskHandler } from "./services/taskHandler";
@@ -15,7 +13,7 @@ let taskHandler = new TaskHandler()
 let initDates = new InitDates()
 let messages = new Messages()
 let weekHandler = new WeekHandler()
-let dateHandlerMain = new DateHandler(new Date())
+let dateHandlerMain = new DateHandler()
 
 let heroBody = $(".hero__body")
 let weekTextInput = $(".week-rewiew__text")
@@ -30,15 +28,14 @@ $(document).ready(function () {
     let timeoutId = 0;
     let firstHold = true;
 
-    initDates.updateAndRenderDates()
+    initDates.updateAndRenderDates(new Date())
     // initDates.addMondayDate()
-    let daysOfWeek = dateHandlerMain.initWeekDates()
+    let daysOfWeek = dateHandlerMain.initWeekDates(new Date())
     let mondayDate = daysOfWeek[0]
 
     let week = weekHandler.findWeek(mondayDate)
-    console.log(week)
 
-    weekHandler.renderWeek(week, heroBody, tasksField, weekTextInput)
+    weekHandler.renderWeek(week, tasksField, weekTextInput)
 
 
     $(document).on("click", function (event) {
@@ -68,12 +65,14 @@ $(document).ready(function () {
     dateInput.on("change", () => {
         let inputDate = dateInput.val()
         let date = new Date(inputDate)
-        let dateHandler = new DateHandler(date)
+        let dateHandler = new DateHandler()
 
-        let daysOfWeek = dateHandler.initWeekDates()
+        let daysOfWeek = dateHandler.initWeekDates(date)
         let mondaDate = daysOfWeek[0]
 
         let week = weekHandler.findWeek(mondaDate)
+        weekHandler.renderWeek(week, tasksField, weekTextInput)
+
 
     })
 

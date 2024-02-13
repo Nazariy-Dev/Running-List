@@ -3,7 +3,7 @@ import { RenderData } from "./renderData";
 import { week } from "./tasksDB";
 import $ from "jquery";
 
-let dateHandler = new DateHandler(new Date());
+let dateHandler = new DateHandler();
 let renderData = new RenderData()
 
 let weekDateField = $('.week-card__header')
@@ -14,8 +14,8 @@ export class InitDates{
         this.datesOfDays;
     }
 
-    updateAndRenderDates(){
-        this.datesOfDays = dateHandler.initWeekDates()
+    updateAndRenderDates(fullDate){
+        this.datesOfDays = dateHandler.initWeekDates(fullDate)
         let datesSpecs = dateHandler.getDatesSpecs()
         renderData.renderDateIn(weekDateField, datesSpecs)
         renderData.addDatesToDays(this.datesOfDays, days)

@@ -1,13 +1,14 @@
 export class DateHandler {
 
-    constructor(date) {
-        this.currentDate = date;
+    constructor() {
+        this.currentDate;
         this.mondayFullDate;
         this.sundayFullDate;
         this.week
     }
 
-    initWeekDates() {
+    initWeekDates(fullDate) {
+        this.currentDate = fullDate
         this.week = new Array();
         let stringDate = JSON.stringify(this.currentDate)
         let constDate = JSON.parse(stringDate)

@@ -8,7 +8,7 @@ export class ShowBoxMenu {
         this.boxTarget;
     }
 
-    showBoxMenu(boxTarget) {
+    showBoxMenu(boxTarget, mondayDate, weekIndex) {
         this.boxTarget = boxTarget
 
         let boxParent = this.boxTarget.parent()
@@ -28,7 +28,7 @@ export class ShowBoxMenu {
                 let state = target[0].dataset.state
                 taskHandler.addBackround(box, state)
                 taskHandler.getTaskReadyFromMenu(box, state)
-                taskHandler.addTask(box)
+                taskHandler.addTask(box, mondayDate, weekIndex)
             }
         })
     }

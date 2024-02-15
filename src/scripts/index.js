@@ -1,5 +1,5 @@
 import "../styles/main.scss"
-import $ from "jquery";
+import $, { valHooks } from "jquery";
 
 import { DateHandler } from "./services/dateHandler";
 import { ShowBoxMenu } from "./services/hoverHander";
@@ -15,7 +15,6 @@ let messages = new Messages()
 let weekHandler = new WeekHandler()
 let dateHandlerMain = new DateHandler()
 
-let heroBody = $(".hero__body")
 let weekTextInput = $(".week-rewiew__text")
 let weekContainer = $(".week-rewiew")
 let tasksField = $(".tasks")
@@ -35,7 +34,13 @@ $(document).ready(function () {
 
     let week = weekHandler.findWeek(mondayDate)
 
-    weekHandler.renderWeek(week, tasksField, weekTextInput)
+    if (week.foundWeek == undefined) {
+        addedWeek = weekHandler.craateWeekObj(mondayDate)
+        weekHandler.addWeekToDB(addedWeek)
+        weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
+        return
+    }
+    weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
 
 
     $(document).on("click", function (event) {
@@ -50,10 +55,9 @@ $(document).ready(function () {
         if (target.closest(".week-rewiew").length != 0) {
             if (target.hasClass("task__button-done")) {
                 let weekText = $(".week-rewiew__text").val()
-                taskHandler.addWeekInfo(weekText)
+                taskHandler.addWeekInfo(weekText, week.weekIndex)
                 weekButtons.fadeOut(50)
             } else if (target.hasClass("task__button-cancel")) {
-                console.log(target.closest(".week-rewiew"))
                 let exitConfirmed = messages.confirmExit()
                 if (exitConfirmed)
                     weekButtons.fadeOut(50)
@@ -66,12 +70,20 @@ $(document).ready(function () {
         let inputDate = dateInput.val()
         let date = new Date(inputDate)
         let dateHandler = new DateHandler()
+        let addedWeek;
 
         let daysOfWeek = dateHandler.initWeekDates(date)
-        let mondaDate = daysOfWeek[0]
+        mondayDate = daysOfWeek[0]
 
-        let week = weekHandler.findWeek(mondaDate)
-        weekHandler.renderWeek(week, tasksField, weekTextInput)
+        let week = weekHandler.findWeek(mondayDate)
+
+        if (week.foundWeek == undefined) {
+            addedWeek = weekHandler.craateWeekObj(mondayDate)
+            weekHandler.addWeekToDB(addedWeek)
+            weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
+            return
+        }
+        weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
 
 
     })
@@ -84,28 +96,29 @@ $(document).ready(function () {
         if (!clickDisabled) {
             let target = $(event.target);
             if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && (target[0].dataset.state == "" || target[0].dataset.state == "assigned")) {
-                taskHandler.getTaskReady(target)
-                taskHandler.addTask(target)
+                taskHandler.getTaskReady(target, mondayDate)
+                taskHandler.addTask(target, mondayDate, week.weekIndex)
             } else if (target.hasClass("task__button-done")) {
-                taskHandler.addTask(target)
+                taskHandler.addTask(target, mondayDate, week.weekIndex)
             } else if (target.hasClass("task__button-cancel")) {
                 let exitConfirmed = messages.confirmExit()
                 if (exitConfirmed)
                     taskHandler.candelAdddition(target)
             } else if (target.hasClass("task__input")) {
-                taskHandler.updateTaskName(target)
+                taskHandler.updateTaskName(target, mondayDate)
             } else if (target[0].dataset.hover == "hover") {
-                taskHandler.addTaskField(target)
+                taskHandler.addTaskField(target, mondayDate, week.weekIndex)
             }
         }
     })
 
     tasksField.on("mousedown", function (event) {
+        // debugger
         let target = $(event.target);
 
         if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && firstHold) {
             timeoutId = setTimeout(function () {
-                showBoxMenu.showBoxMenu(target)
+                showBoxMenu.showBoxMenu(target, mondayDate, week.weekIndex)
 
                 clickDisabled = true;
             }, 500);
@@ -116,5 +129,33 @@ $(document).ready(function () {
         setTimeout(function () {
             clickDisabled = false;
         }, 300); // A
+    })
+
+    tasksField.on("keyup", (e) => {
+        let input = $(e.target)
+
+        if (e.key === 'Enter' || e.code === 13) {
+            taskHandler.addTask(input, mondayDate, week.weekIndex)
+        } else if (e.key === "Escape") {
+            let exitConfirmed = messages.confirmExit()
+            if (exitConfirmed) {
+                taskHandler.candelAdddition(input)
+            }
+        }
+    })
+
+    weekTextInput.on("keyup", (e) => {
+        let target = $(e.target)
+        if (e.key === 'Enter' || e.code === 13) {
+            let weekText = $(".week-rewiew__text").val()
+            taskHandler.addWeekInfo(weekText, week.weekIndex)
+            weekButtons.fadeOut(50)
+        } else if (e.key === "Escape") {
+            // debugger
+            let exitConfirmed = messages.confirmExit()
+            if (exitConfirmed)
+                weekButtons.fadeOut(50)
+            target.blur()
+        }
     })
 })

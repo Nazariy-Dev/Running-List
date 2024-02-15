@@ -1,6 +1,6 @@
 import { DateHandler } from "./dateHandler";
 import { RenderData } from "./renderData";
-import { week } from "./tasksDB";
+import { week } from "./week";
 import $ from "jquery";
 
 let dateHandler = new DateHandler();

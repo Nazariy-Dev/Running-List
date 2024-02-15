@@ -1,5 +1,8 @@
 import $ from "jquery";
-import { week } from "./tasksDB";
+import { week } from "./week";
+import weeks from "./weeks.json"
+
+
 import { v4 as uuidv4 } from 'uuid';
 import { InitDates } from "./initDates";
 
@@ -11,7 +14,7 @@ import deligatedUrl from "../../assets/icons/Deligate.svg"
 let initDates = new InitDates()
 
 export class TaskHandler {
-    getTaskReady(boxTarget) {
+    getTaskReady(boxTarget, mondaDate) {
         boxTarget = $(boxTarget)
         let task = boxTarget.closest(".task")
         let input = task.find('.task__input')
@@ -23,7 +26,7 @@ export class TaskHandler {
             this.addBackround(boxTarget, "done")
         } else {
             if(input[0].value.length == 0) {
-                this.updateTaskName(input)
+                this.updateTaskName(input, mondaDate)
             }
             boxTarget[0].dataset.state = "assigned"
             this.addBackround(boxTarget, "assigned")
@@ -61,9 +64,9 @@ export class TaskHandler {
         }
     }
 
-    addTask(taskElem) {
+    addTask(taskElem, mondayDate, weekIndex) {
         console.log("add task")
-        initDates.updateAndRenderDates(new Date())
+        initDates.updateAndRenderDates(new Date(mondayDate))
         
         let task = taskElem.closest(".task")
         let input = task.find('.task__label')
@@ -112,26 +115,24 @@ export class TaskHandler {
         if (buttons.css("display") != "none" && !taskElem.hasClass("task__marker-placeholder"))
             buttons.fadeOut(50)
             
-        console.log(JSON.stringify(week))
+        // console.log(JSON.stringify(week))
+        // debugger
+        
+        weeks.weeks[weekIndex].tasks = week.tasks
+        console.log(weeks)
      
 
     }
 
-    updateTaskName(input) {
+    updateTaskName(input, mondayDate) {
+        let mondayDateCopy = mondayDate
         let task = input.closest(".task")
         let buttons = task.find(".task__buttons-wrapper")
         buttons.fadeIn(50)
         input.select()
-
-        input.on("keyup", (e)=>{
-            if(e.key === 'Enter' || e.keyCode === 13){
-                this.addTask(input)
-                input.off("keyup")
-            }
-        })
     }
 
-    addTaskField(boxTarget) {
+    addTaskField(boxTarget, mondayDate, weekIndex) {
         let id = uuidv4()
         let dayReference = boxTarget[0].dataset.dayReference
 
@@ -152,7 +153,7 @@ export class TaskHandler {
         let task = tasks.find(`[data-id="${id}`)
         let day = task.find(`[data-day-reference=${dayReference}]`)
         this.getTaskReady(day)
-        this.addTask(day)
+        this.addTask(day, mondayDate, weekIndex)
     }
 
     candelAdddition(button){
@@ -163,9 +164,11 @@ export class TaskHandler {
         input.blur()
     }
 
-    addWeekInfo(weekText){
-        week.weekReview = weekText
-        console.log(week)
+    addWeekInfo(weekText, weekIndex){
+        // week.weekReview = weekText
+        weeks.weeks[weekIndex].weekReview = weekText
+        console.log(weeks)
+
     }
 
 }

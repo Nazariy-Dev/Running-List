@@ -2,9 +2,9 @@ import $ from "jquery";
 import { week } from "./week";
 import weeks from "./weeks.json"
 
-
 import { v4 as uuidv4 } from 'uuid';
 import { InitDates } from "./initDates";
+import { IndexedDB } from "./IndexedDB";
 
 import doneURl from "../../assets/icons/Done.svg"
 import addedURl from "../../assets/icons/Added.svg"
@@ -12,6 +12,8 @@ import undoneUrl from "../../assets/icons/Undone.svg"
 import deligatedUrl from "../../assets/icons/Deligate.svg"
 
 let initDates = new InitDates()
+let indexedDB = new IndexedDB()
+
 
 export class TaskHandler {
     getTaskReady(boxTarget, mondaDate) {
@@ -64,7 +66,7 @@ export class TaskHandler {
         }
     }
 
-    addTask(taskElem, mondayDate, weekIndex) {
+    addTask(taskElem, mondayDate, weekIndex, DB) {
         console.log("add task")
         initDates.updateAndRenderDates(new Date(mondayDate))
         
@@ -94,7 +96,7 @@ export class TaskHandler {
             })
         })
 
-        week.tasks.forEach((taskDB) => {
+        weeks.weeks[weekIndex].tasks.forEach((taskDB) => {
             if (task[0].dataset.id == taskDB.id) {
                 isFound = true
 
@@ -104,8 +106,10 @@ export class TaskHandler {
             }
         })
 
+        console.log(weeks.weeks[weekIndex].tasks)
+
         if (!isFound) {
-            week.tasks.push({
+            weeks.weeks[weekIndex].tasks.push({
                 id: task[0].dataset.id,
                 dates: dateData,
                 taskName,
@@ -116,16 +120,15 @@ export class TaskHandler {
             buttons.fadeOut(50)
             
         // console.log(JSON.stringify(week))
-        // debugger
         
-        weeks.weeks[weekIndex].tasks = week.tasks
+        // indexedDB.addTask(week, DB)
+        weeks.weeks[weekIndex].tasks = weeks.weeks[weekIndex].tasks
         console.log(weeks)
      
 
     }
 
     updateTaskName(input, mondayDate) {
-        let mondayDateCopy = mondayDate
         let task = input.closest(".task")
         let buttons = task.find(".task__buttons-wrapper")
         buttons.fadeIn(50)

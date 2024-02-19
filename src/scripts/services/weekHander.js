@@ -41,6 +41,11 @@ export class WeekHandler {
 
     addWeekToDB(week) {
         weeks.weeks.push(week)
+        let index = weeks.weeks.indexOf(week)
+        return {
+            foundWeek: week,
+            weekIndex: index
+        }
     }
 
     renderWeek(week, tasksField, weekTextInput, mondayDate) {

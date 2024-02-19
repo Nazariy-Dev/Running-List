@@ -1,5 +1,5 @@
 import "../styles/main.scss"
-import $, { valHooks } from "jquery";
+import $ from "jquery";
 
 import { DateHandler } from "./services/dateHandler";
 import { ShowBoxMenu } from "./services/hoverHander";
@@ -7,6 +7,7 @@ import { TaskHandler } from "./services/taskHandler";
 import { InitDates } from "./services/initDates";
 import { Messages } from "./services/messages";
 import { WeekHandler } from "./services/weekHander";
+import { IndexedDB } from "./services/IndexedDB";
 
 let showBoxMenu = new ShowBoxMenu()
 let taskHandler = new TaskHandler()
@@ -14,6 +15,7 @@ let initDates = new InitDates()
 let messages = new Messages()
 let weekHandler = new WeekHandler()
 let dateHandlerMain = new DateHandler()
+let indexedDB = new IndexedDB()
 
 let weekTextInput = $(".week-rewiew__text")
 let weekContainer = $(".week-rewiew")
@@ -21,14 +23,19 @@ let tasksField = $(".tasks")
 let weekButtons = weekContainer.find(".task__buttons-wrapper")
 let dateInput = $("#date-input")
 
-
 $(document).ready(function () {
     var clickDisabled = false;
     let timeoutId = 0;
     let firstHold = true;
+    let addedWeek;
+    let DB;
 
+    indexedDB.initialize(function (database) {
+        DB = database;
+    })
     initDates.updateAndRenderDates(new Date())
-    // initDates.addMondayDate()
+    initDates.addMondayDate()
+
     let daysOfWeek = dateHandlerMain.initWeekDates(new Date())
     let mondayDate = daysOfWeek[0]
 
@@ -36,12 +43,11 @@ $(document).ready(function () {
 
     if (week.foundWeek == undefined) {
         addedWeek = weekHandler.craateWeekObj(mondayDate)
-        weekHandler.addWeekToDB(addedWeek)
+        week = weekHandler.addWeekToDB(addedWeek)
         weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
-        return
+    } else {
+        weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
     }
-    weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
-
 
     $(document).on("click", function (event) {
         let target = $(event.target);
@@ -75,17 +81,15 @@ $(document).ready(function () {
         let daysOfWeek = dateHandler.initWeekDates(date)
         mondayDate = daysOfWeek[0]
 
-        let week = weekHandler.findWeek(mondayDate)
+        week = weekHandler.findWeek(mondayDate)
 
         if (week.foundWeek == undefined) {
             addedWeek = weekHandler.craateWeekObj(mondayDate)
-            weekHandler.addWeekToDB(addedWeek)
+            week = weekHandler.addWeekToDB(addedWeek)
             weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
-            return
+        } else {
+            weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
         }
-        weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
-
-
     })
 
     weekTextInput.on("focus", (event) => {
@@ -97,7 +101,8 @@ $(document).ready(function () {
             let target = $(event.target);
             if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && (target[0].dataset.state == "" || target[0].dataset.state == "assigned")) {
                 taskHandler.getTaskReady(target, mondayDate)
-                taskHandler.addTask(target, mondayDate, week.weekIndex)
+                console.log(DB)
+                taskHandler.addTask(target, mondayDate, week.weekIndex, DB)
             } else if (target.hasClass("task__button-done")) {
                 taskHandler.addTask(target, mondayDate, week.weekIndex)
             } else if (target.hasClass("task__button-cancel")) {
@@ -113,7 +118,6 @@ $(document).ready(function () {
     })
 
     tasksField.on("mousedown", function (event) {
-        // debugger
         let target = $(event.target);
 
         if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && firstHold) {
@@ -151,7 +155,6 @@ $(document).ready(function () {
             taskHandler.addWeekInfo(weekText, week.weekIndex)
             weekButtons.fadeOut(50)
         } else if (e.key === "Escape") {
-            // debugger
             let exitConfirmed = messages.confirmExit()
             if (exitConfirmed)
                 weekButtons.fadeOut(50)

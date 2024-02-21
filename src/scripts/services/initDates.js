@@ -1,6 +1,5 @@
 import { DateHandler } from "./dateHandler";
 import { RenderData } from "./renderData";
-import { week } from "./week";
 import $ from "jquery";
 
 let dateHandler = new DateHandler();
@@ -19,9 +18,5 @@ export class InitDates{
         let datesSpecs = dateHandler.getDatesSpecs()
         renderData.renderDateIn(weekDateField, datesSpecs)
         renderData.addDatesToDays(this.datesOfDays, days)
-    }
-
-    addMondayDate(){
-        week.mondayDate = this.datesOfDays[0]
     }
 }

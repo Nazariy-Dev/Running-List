@@ -1,35 +1,41 @@
-import $ from "jquery";
+import $, { data, error } from "jquery";
 import weeks from "./weeks.json"
 import { InitDates } from "./initDates";
 import { TaskHandler } from "./taskHandler";
 import { v4 as uuidv4 } from 'uuid';
-
+import { IndexedDB } from "./IndexedDB";
 
 let taskHandler = new TaskHandler()
+let indexedDB = new IndexedDB()
 
 export class WeekHandler {
-    findWeek(mondayDate) {
-        let foundWeek = undefined
-        let weekIndex;
+    findWeek(mondayDate, DB) {
+         return indexedDB.getAllWeeks(DB, mondayDate)
+        // indexedDB.getWeek(DB, 2)
+        // .then((data)=>{
+        //     console.log(data)
+        // })
+        // .catch((error)=>{
+        //     console.log(error.message)
+        // })
 
-        weeks.weeks.forEach((week, index) => {
-            let mondayDateDB = new Date(week.mondayDate)
-            let weekDBTime = new Date(mondayDateDB.setHours(2, 0, 0, 0))
-            weekDBTime = weekDBTime.getTime()
-            mondayDate.setHours(2, 0, 0, 0)
-            let calenderTime = new Date(mondayDate).getTime();
-            if (weekDBTime == calenderTime) {
-                foundWeek = week
-                weekIndex = index
-                return
-            }
+        // weeks.weeks.forEach((week, index) => {
+        //     let mondayDateDB = new Date(week.mondayDate)
+        //     let weekDBTime = new Date(mondayDateDB.setHours(2, 0, 0, 0))
+        //     weekDBTime = weekDBTime.getTime()
+        //     mondayDate.setHours(2, 0, 0, 0)
+        //     let calenderTime = new Date(mondayDate).getTime();
+        //     if (weekDBTime == calenderTime) {
+        //         foundWeek = week
+        //         weekIndex = index
+        //         return
+        //     }
+        // })
 
-        })
-
-        return { foundWeek, weekIndex }
+        // return { foundWeek, weekIndex }
     }
 
-    craateWeekObj(mondayDate){
+    craateWeekObj(mondayDate) {
         let weekObj = {
             mondayDate,
             tasks: [],
@@ -39,13 +45,14 @@ export class WeekHandler {
         return weekObj
     }
 
-    addWeekToDB(week) {
-        weeks.weeks.push(week)
-        let index = weeks.weeks.indexOf(week)
-        return {
-            foundWeek: week,
-            weekIndex: index
-        }
+    addWeekToDB(week, DB) {
+        let foundWeek;
+        let weekIndex;
+        // weeks.weeks.push(week)
+        // let index = weeks.weeks.indexOf(week)
+        indexedDB.addWeek(week, DB)
+        foundWeek = this.findWeek(week.mondayDate, DB)
+        return foundWeek
     }
 
     renderWeek(week, tasksField, weekTextInput, mondayDate) {
@@ -53,8 +60,6 @@ export class WeekHandler {
         let tasks = week.tasks
 
         let initDates = new InitDates()
-
-
 
         initDates.updateAndRenderDates(mondaDate)
 
@@ -71,13 +76,11 @@ export class WeekHandler {
             return
         }
 
-
         tasks.forEach(task => {
             let divTask = this.createTaskDiv(task)
             let input = divTask.find(".task__input")
             input.val(task.taskName)
             input.parent()[0].dataset.value = task.taskName
-
 
             task.dates.forEach(date => {
                 let dayReference = date.dayOfWeek
@@ -87,13 +90,8 @@ export class WeekHandler {
                 taskHandler.addBackround(day, state)
             })
 
-
             tasksField.append(divTask)
-
-
-
         })
-
     }
 
     createTaskDiv(task, ...args) {

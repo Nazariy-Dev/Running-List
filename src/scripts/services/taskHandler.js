@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { week } from "./week";
 import weeks from "./weeks.json"
 
 import { v4 as uuidv4 } from 'uuid';
@@ -14,7 +13,6 @@ import deligatedUrl from "../../assets/icons/Deligate.svg"
 let initDates = new InitDates()
 let indexedDB = new IndexedDB()
 
-
 export class TaskHandler {
     getTaskReady(boxTarget, mondaDate) {
         boxTarget = $(boxTarget)
@@ -24,10 +22,10 @@ export class TaskHandler {
         if (boxTarget[0].dataset.state == "assigned") {
             boxTarget[0].dataset.state = "done"
             this.addBackround(boxTarget, "done")
-        } else if(boxTarget[0].dataset.state == "done"){
+        } else if (boxTarget[0].dataset.state == "done") {
             this.addBackround(boxTarget, "done")
         } else {
-            if(input[0].value.length == 0) {
+            if (input[0].value.length == 0) {
                 this.updateTaskName(input, mondaDate)
             }
             boxTarget[0].dataset.state = "assigned"
@@ -35,7 +33,7 @@ export class TaskHandler {
         }
     }
 
-    getTaskReadyFromMenu(boxTarget, state){
+    getTaskReadyFromMenu(boxTarget, state) {
         boxTarget = $(boxTarget)
         let task = boxTarget.closest(".task")
         let input = task.find('.task__input')
@@ -48,16 +46,16 @@ export class TaskHandler {
             let url;
             if (state == "assigned") {
                 url = addedURl
-            } else if (state == "done"){
+            } else if (state == "done") {
                 url = doneURl
-            
-            } else if (state == "undone"){
+
+            } else if (state == "undone") {
                 url = undoneUrl
-            
-            } else if (state == "deligated"){
+
+            } else if (state == "deligated") {
                 url = deligatedUrl
-            } 
-            
+            }
+
             boxTarget.css({
                 "background-image": `url('${url}')`,
                 "display": "block",
@@ -69,73 +67,71 @@ export class TaskHandler {
     addTask(taskElem, mondayDate, weekIndex, DB) {
         console.log("add task")
         initDates.updateAndRenderDates(new Date(mondayDate))
-        
-        let task = taskElem.closest(".task")
-        let input = task.find('.task__label')
-        let buttons = task.find(".task__buttons-wrapper")
-        let assignedDays = task.find("[data-state]")
-            .filter((index, value) => {
-                return value.dataset.state.length > 0
+        let founWeek = indexedDB.getWeek(DB, weekIndex)
+        founWeek.then((week) => {
+            let task = taskElem.closest(".task")
+            let input = task.find('.task__label')
+            let buttons = task.find(".task__buttons-wrapper")
+            let assignedDays = task.find("[data-state]")
+                .filter((index, value) => {
+                    return value.dataset.state.length > 0
+                })
+
+            let dateData = []
+            let taskName = input[0].dataset.value || "No title"
+
+            let isFound = false
+
+            assignedDays.each((index, day) => {
+                let dayReference = day.dataset.dayReference
+                // let dateSpecs = []
+                let dates = $('.days-line__days').find(`[data-day=${dayReference}]`)[0].dataset.date
+                let state = day.dataset.state
+
+                dateData.push({
+                    dayOfWeek: dayReference,
+                    dates,
+                    state
+                })
             })
 
-        let dateData = []
-        let taskName = input[0].dataset.value || "No title"
+            week.tasks.forEach((taskDB) => {
+                if (task[0].dataset.id == taskDB.id) {
+                    isFound = true
 
-        let isFound = false
-
-        assignedDays.each((index, day) => {
-            let dayReference = day.dataset.dayReference
-            // let dateSpecs = []
-            let dates = $('.days-line__days').find(`[data-day=${dayReference}]`)[0].dataset.date
-            let state = day.dataset.state
-
-            dateData.push({
-                dayOfWeek: dayReference,
-                dates,
-                state
+                    taskDB.taskName = taskName
+                    taskDB.dates = dateData
+                    return
+                }
             })
-        })
 
-        weeks.weeks[weekIndex].tasks.forEach((taskDB) => {
-            if (task[0].dataset.id == taskDB.id) {
-                isFound = true
-
-                taskDB.taskName = taskName
-                taskDB.dates = dateData
-                return
+            if (!isFound) {
+                week.tasks.push({
+                    id: task[0].dataset.id,
+                    dates: dateData,
+                    taskName,
+                })
             }
+
+            if (buttons.css("display") != "none" && !taskElem.hasClass("task__marker-placeholder")) {
+                buttons.fadeOut(50)
+            }
+
+            // debugger
+            indexedDB.updateWeek(DB, week, weekIndex)
         })
-
-        console.log(weeks.weeks[weekIndex].tasks)
-
-        if (!isFound) {
-            weeks.weeks[weekIndex].tasks.push({
-                id: task[0].dataset.id,
-                dates: dateData,
-                taskName,
-            })
-        }
-
-        if (buttons.css("display") != "none" && !taskElem.hasClass("task__marker-placeholder"))
-            buttons.fadeOut(50)
-            
-        // console.log(JSON.stringify(week))
-        
-        // indexedDB.addTask(week, DB)
-        weeks.weeks[weekIndex].tasks = weeks.weeks[weekIndex].tasks
-        console.log(weeks)
-     
+        // indexedDB.addWeek(week, DB)
 
     }
 
-    updateTaskName(input, mondayDate) {
+    updateTaskName(input) {
         let task = input.closest(".task")
         let buttons = task.find(".task__buttons-wrapper")
         buttons.fadeIn(50)
         input.select()
     }
 
-    addTaskField(boxTarget, mondayDate, weekIndex) {
+    addTaskField(boxTarget, mondayDate, weekIndex, DB) {
         let id = uuidv4()
         let dayReference = boxTarget[0].dataset.dayReference
 
@@ -156,10 +152,10 @@ export class TaskHandler {
         let task = tasks.find(`[data-id="${id}`)
         let day = task.find(`[data-day-reference=${dayReference}]`)
         this.getTaskReady(day)
-        this.addTask(day, mondayDate, weekIndex)
+        this.addTask(day, mondayDate, weekIndex, DB)
     }
 
-    candelAdddition(button){
+    candelAdddition(button) {
         let task = button.closest(".task")
         let input = task.find(".task__input")
         let buttons = task.find(".task__buttons-wrapper")
@@ -167,11 +163,11 @@ export class TaskHandler {
         input.blur()
     }
 
-    addWeekInfo(weekText, weekIndex){
-        // week.weekReview = weekText
-        weeks.weeks[weekIndex].weekReview = weekText
-        console.log(weeks)
-
+    addWeekInfo(DB, weekText, weekIndex) {
+        let founWeek = indexedDB.getWeek(DB, weekIndex)
+        founWeek.then((week) => {
+            week.weekReview = weekText
+            indexedDB.updateWeek(DB, week, weekIndex)
+        })
     }
-
 }

@@ -29,25 +29,32 @@ $(document).ready(function () {
     let firstHold = true;
     let addedWeek;
     let DB;
+    let mondayDate;
+    let week;
 
-    indexedDB.initialize(function (database) {
-        DB = database;
-    })
-    initDates.updateAndRenderDates(new Date())
-    initDates.addMondayDate()
+    indexedDB.initialize()
+        .then((database) => {
+            DB = database;
+            initDates.updateAndRenderDates(new Date())
+            let daysOfWeek = dateHandlerMain.initWeekDates(new Date())
+            mondayDate = daysOfWeek[0]
+            week = weekHandler.findWeek(mondayDate, DB)
+            return week
+        })
+        .then((weekFromDB) => {
+            week = weekFromDB
+            if (weekFromDB.foundWeek == undefined) {
+                addedWeek = weekHandler.craateWeekObj(mondayDate)
+                let foundWeek = weekHandler.addWeekToDB(addedWeek, DB)
+                foundWeek.then(res => {
+                    week = res
+                })
+                weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
+            } else {
+                weekHandler.renderWeek(weekFromDB.foundWeek, tasksField, weekTextInput, mondayDate)
+            }
+        })
 
-    let daysOfWeek = dateHandlerMain.initWeekDates(new Date())
-    let mondayDate = daysOfWeek[0]
-
-    let week = weekHandler.findWeek(mondayDate)
-
-    if (week.foundWeek == undefined) {
-        addedWeek = weekHandler.craateWeekObj(mondayDate)
-        week = weekHandler.addWeekToDB(addedWeek)
-        weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
-    } else {
-        weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
-    }
 
     $(document).on("click", function (event) {
         let target = $(event.target);
@@ -61,8 +68,8 @@ $(document).ready(function () {
         if (target.closest(".week-rewiew").length != 0) {
             if (target.hasClass("task__button-done")) {
                 let weekText = $(".week-rewiew__text").val()
-                taskHandler.addWeekInfo(weekText, week.weekIndex)
                 weekButtons.fadeOut(50)
+                taskHandler.addWeekInfo(DB, weekText, week.weekIndex)
             } else if (target.hasClass("task__button-cancel")) {
                 let exitConfirmed = messages.confirmExit()
                 if (exitConfirmed)
@@ -78,18 +85,30 @@ $(document).ready(function () {
         let dateHandler = new DateHandler()
         let addedWeek;
 
-        let daysOfWeek = dateHandler.initWeekDates(date)
+        let daysOfWeek = dateHandlerMain.initWeekDates(date)
         mondayDate = daysOfWeek[0]
 
-        week = weekHandler.findWeek(mondayDate)
-
-        if (week.foundWeek == undefined) {
-            addedWeek = weekHandler.craateWeekObj(mondayDate)
-            week = weekHandler.addWeekToDB(addedWeek)
-            weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
-        } else {
-            weekHandler.renderWeek(week.foundWeek, tasksField, weekTextInput, mondayDate)
-        }
+        indexedDB.initialize()
+            .then((database) => {
+                DB = database;
+                let daysOfWeek = dateHandlerMain.initWeekDates(date)
+                mondayDate = daysOfWeek[0]
+                week = weekHandler.findWeek(mondayDate, DB)
+                return week
+            })
+            .then((weekFromDB) => {
+                week = weekFromDB
+                if (weekFromDB.foundWeek == undefined) {
+                    addedWeek = weekHandler.craateWeekObj(mondayDate)
+                    let foundWeek = weekHandler.addWeekToDB(addedWeek, DB)
+                    foundWeek.then(res => {
+                        week = res
+                    })
+                    weekHandler.renderWeek(addedWeek, tasksField, weekTextInput, mondayDate)
+                } else {
+                    weekHandler.renderWeek(weekFromDB.foundWeek, tasksField, weekTextInput, mondayDate)
+                }
+            })
     })
 
     weekTextInput.on("focus", (event) => {
@@ -101,18 +120,17 @@ $(document).ready(function () {
             let target = $(event.target);
             if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && (target[0].dataset.state == "" || target[0].dataset.state == "assigned")) {
                 taskHandler.getTaskReady(target, mondayDate)
-                console.log(DB)
                 taskHandler.addTask(target, mondayDate, week.weekIndex, DB)
             } else if (target.hasClass("task__button-done")) {
-                taskHandler.addTask(target, mondayDate, week.weekIndex)
+                taskHandler.addTask(target, mondayDate, week.weekIndex, DB)
             } else if (target.hasClass("task__button-cancel")) {
                 let exitConfirmed = messages.confirmExit()
                 if (exitConfirmed)
                     taskHandler.candelAdddition(target)
             } else if (target.hasClass("task__input")) {
-                taskHandler.updateTaskName(target, mondayDate)
+                taskHandler.updateTaskName(target)
             } else if (target[0].dataset.hover == "hover") {
-                taskHandler.addTaskField(target, mondayDate, week.weekIndex)
+                taskHandler.addTaskField(target, mondayDate, week.weekIndex, DB)
             }
         }
     })
@@ -122,7 +140,7 @@ $(document).ready(function () {
 
         if (target.hasClass('task__marker-placeholder') && target[0].dataset.hover != "hover" && firstHold) {
             timeoutId = setTimeout(function () {
-                showBoxMenu.showBoxMenu(target, mondayDate, week.weekIndex)
+                showBoxMenu.showBoxMenu(target, mondayDate, week.weekIndex, DB)
 
                 clickDisabled = true;
             }, 500);
@@ -139,7 +157,7 @@ $(document).ready(function () {
         let input = $(e.target)
 
         if (e.key === 'Enter' || e.code === 13) {
-            taskHandler.addTask(input, mondayDate, week.weekIndex)
+            taskHandler.addTask(input, mondayDate, week.weekIndex, DB)
         } else if (e.key === "Escape") {
             let exitConfirmed = messages.confirmExit()
             if (exitConfirmed) {
@@ -152,13 +170,14 @@ $(document).ready(function () {
         let target = $(e.target)
         if (e.key === 'Enter' || e.code === 13) {
             let weekText = $(".week-rewiew__text").val()
-            taskHandler.addWeekInfo(weekText, week.weekIndex)
             weekButtons.fadeOut(50)
+            taskHandler.addWeekInfo(DB, weekText, week.weekIndex)
         } else if (e.key === "Escape") {
             let exitConfirmed = messages.confirmExit()
-            if (exitConfirmed)
+            if (exitConfirmed) {
                 weekButtons.fadeOut(50)
-            target.blur()
+                target.blur()
+            }
         }
     })
 })

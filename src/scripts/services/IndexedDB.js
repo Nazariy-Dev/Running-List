@@ -44,11 +44,10 @@ export class IndexedDB {
             // Обращение на добавление
             let req = store.add(week);
             req.onsuccess = (event) => {
-                alert('New week was added');
                 resolve()
             };
             req.onerror = (event) => {
-                alert('There is a problem with adding a new week');
+                console.log('There is a problem with adding a new week');
                 return false;
             };
         })

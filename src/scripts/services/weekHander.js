@@ -67,7 +67,7 @@ export class WeekHandler {
     }
 
     renderTasksHtml(tasksField, tasks) {
-        debugger
+
         tasksField.find(".task").remove()
 
         if (tasks.length == 0) {

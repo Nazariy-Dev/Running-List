@@ -3,7 +3,7 @@ main.hero
     .container
         .hero__body
             .week-card
-                .week-card__header.section-header Month: 14/05 - 21/05
+                .week-card__header.section-header Date: 00/00 - 00/00
                 .week-card__days-line.days-line
                     .days-line__days
                         -let daysOFWeek = ["M", "T", "W", "T", "F", "S"]
@@ -12,23 +12,24 @@ main.hero
                         .days-line__day(data-day=0 data-date) S
                     .days-line__text Running List
                 .week-card__tasks.tasks
-                    - for (let i=0; i<1; i++)
-                        .tasks__task.task(data-id="1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed")
-                            -for (let i = 1; i<7; i++)
-                                .task__marker: .task__marker-placeholder(data-day-reference=i data-state)  
-                            .task__marker: .task__marker-placeholder(data-day-reference=0 data-state)  
+                    //- - for (let i=0; i<1; i++)
+                    //-     .tasks__task.task(data-id="1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed")
+                    //-         -for (let i = 1; i<7; i++)
+                    //-             .task__marker: .task__marker-placeholder(data-day-reference=i data-state)  
+                    //-         .task__marker: .task__marker-placeholder(data-day-reference=0 data-state)  
 
-                            .input-sizer.task__label
-                                input.task__input(type="text" onInput="this.parentNode.dataset.value = this.value" size="4" placeholder="Task")
+                    //-         .input-sizer.task__label
+                    //-             input.task__input(type="text" onInput="this.parentNode.dataset.value = this.value" size="4" placeholder="Task")
                            
-                            .task__buttons-wrapper
-                                .task__buttons
-                                    button.task__button.task__button-done Done
-                                    button.task__button.task__button-cancel Cancel
+                    //-         .task__buttons-wrapper
+                    //-             .task__buttons
+                    //-                 button.task__button.task__button-done Done
+                    //-                 button.task__button.task__button-cancel Cancel
+                    //-         .task__delete-btn
                     .tasks__hover
                         -for (let i =1; i<7; i++)
-                            .task__marker: .task__marker-placeholder(data-day-reference=i data-hover="hover")  
-                        .task__marker: .task__marker-placeholder(data-day-reference=0 data-hover="hover")  
+                            .task__marker(data-day-reference=i data-hover="hover"): .task__marker-placeholder  
+                        .task__marker(data-day-reference=0 data-hover="hover"): .task__marker-placeholder
                     .task__more-box.more-box
                         img(src=require("../../assets/icons/Done.svg") data-state="done", alt="").more-box__image
                         img(src=require("../../assets/icons/Deligate.svg") data-state="deligated", alt="").more-box__image

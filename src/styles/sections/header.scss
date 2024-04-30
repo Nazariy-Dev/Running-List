@@ -2,27 +2,27 @@
     padding: 13px 0;
     font-family: $ff-semi-bold;
     border-bottom: 1px solid rgba(144, 144, 144, 0.50);
-    margin-bottom: 50px;
 }
 
 .nav{
-
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1rem;
 
     &__item{
         &:visited{
             color: inherit;
         }
         &:not(:last-child) {
-            display: block;
-            margin-right: 74px;
+            // margin-right: 74px;
         }
     }
 
     #date-input{
         background: none;
+    font-size: 1rem;
+
     }
     
 }

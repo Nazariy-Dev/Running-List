@@ -35,20 +35,23 @@ export class IndexedDB {
     }
 
     addWeek(week, DB) {
-        // создание новой транзакции обращение к объекту хранилища
-        let transaction = DB.transaction(['Weeks'], 'readwrite'); //readonly - для чтения
-        // Обращение к таблице
-        let store = transaction.objectStore('Weeks');
-        // Обращение на добавление
-        let req = store.add(week);
-        req.onsuccess = (event) => {
-            alert('New week was added');
-        };
-        req.onerror = (event) => {
-            alert('There is a problem with adding a new week');
-            return false;
-        };
 
+        return new Promise((resolve, reject) => {
+            // создание новой транзакции обращение к объекту хранилища
+            let transaction = DB.transaction(['Weeks'], 'readwrite'); //readonly - для чтения
+            // Обращение к таблице
+            let store = transaction.objectStore('Weeks');
+            // Обращение на добавление
+            let req = store.add(week);
+            req.onsuccess = (event) => {
+                alert('New week was added');
+                resolve()
+            };
+            req.onerror = (event) => {
+                alert('There is a problem with adding a new week');
+                return false;
+            };
+        })
     }
 
     getAllWeeks(DB, mondayDate) {
@@ -64,6 +67,7 @@ export class IndexedDB {
 
             cursor.onsuccess = (event) => {
                 let cursor = event.target.result;
+
                 if (cursor) {
                     const currentIndex = cursor.primaryKey;
 
@@ -82,7 +86,6 @@ export class IndexedDB {
                     cursor.continue()
                     console.log(week)
                 } else {
-                    console.log("all displayed")
                     resolve({ foundWeek, weekIndex })
                 }
             }
@@ -109,7 +112,7 @@ export class IndexedDB {
         })
     }
 
-    updateWeek(DB, week, index){
+    updateWeek(DB, week, index) {
         return new Promise((resolve, reject) => {
 
             let transaction = DB.transaction(['Weeks'], 'readwrite');
@@ -127,4 +130,24 @@ export class IndexedDB {
             }
         })
     }
+
+    deleteWeek(DB, index) {
+        return new Promise((resolve, reject) => {
+
+            let transaction = DB.transaction(['Weeks'], 'readwrite');
+            let store = transaction.objectStore('Weeks');
+            // Обращение к существующему объекту в БД
+            let request = store.delete(index)
+
+
+            request.onsuccess = (event) => {
+                let data = request.result
+                resolve(data)
+            }
+            request.onerror = (e) => {
+                console.log('No nection to DB');
+            }
+        })
+    }
+
 }

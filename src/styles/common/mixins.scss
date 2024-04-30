@@ -3,3 +3,17 @@
     justify-items: center;
     align-items: center;
 }
+
+@mixin centerer-x(){
+    transform: translateX(-50%);
+    left: 50%;
+}
+@mixin centerer-y(){
+    transform: translateY(-50%);
+    top: 50%;
+}
+@mixin centerer-xy(){
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+}

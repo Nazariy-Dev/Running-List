@@ -12,12 +12,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^10.4.19",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^9.0.0",
+    "postcss-loader": "^8.1.1",
     "pug-loader": "^2.4.0",
     "sass-loader": "^13.3.3",
     "style-loader": "^3.3.3",
@@ -29,5 +31,15 @@
   "dependencies": {
     "jquery": "^3.7.1",
     "uuid": "^9.0.1"
-  }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "last 2 version",
+    "not dead",
+    "iOS >= 9"
+  ]
 }

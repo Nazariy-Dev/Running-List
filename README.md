@@ -1,2 +1,2 @@
 ## Runnigs list
-An app to track you tasks easyly
+An app to track you tasks easily
